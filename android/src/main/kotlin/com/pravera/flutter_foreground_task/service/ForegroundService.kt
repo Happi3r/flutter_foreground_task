@@ -214,12 +214,15 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			if (iconBackgroundColor != null) {
 				builder.setColor(iconBackgroundColor)
 			}
-			for (action in buildButtonActions()) {
+			for (action in buildButtonActions(iconResId)) {
 				builder.addAction(action)
 			}
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 				builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
 			}
+			builder.setStyle(Notification.MediaStyle()
+				.setShowActionsInCompactView(0, 1)
+			)
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
 			val builder = NotificationCompat.Builder(this, notificationOptions.channelId)
@@ -444,7 +447,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		}
 	}
 
-	private fun buildButtonActions(): List<Notification.Action> {
+	private fun buildButtonActions(id: Int): List<Notification.Action> {
 		val actions = mutableListOf<Notification.Action>()
 		val buttons = notificationOptions.buttons
 		for (i in buttons.indices) {
@@ -457,7 +460,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				PendingIntent.getBroadcast(this, i + 1, bIntent, 0)
 			}
 			val bAction = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				Notification.Action.Builder(null, buttons[i].text, bPendingIntent).build()
+				Notification.Action.Builder(id, "TEST"/*buttons[i].text*/, bPendingIntent).build()
 			} else {
 				Notification.Action.Builder(0, buttons[i].text, bPendingIntent).build()
 			}
