@@ -45,6 +45,9 @@ abstract class FlutterForegroundTaskPlatform extends PlatformInterface {
   Future<bool> updateService({
     String? notificationTitle,
     String? notificationText,
+    bool playing = false,
+    double position = 0,
+    double duration = 0,
     Function? callback,
   }) {
     throw UnimplementedError('updateService() has not been implemented.');

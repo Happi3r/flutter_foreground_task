@@ -20,7 +20,10 @@ data class NotificationOptions(
     val isSticky: Boolean,
     val visibility: Int,
     val iconData: NotificationIconData?,
-    val buttons: List<NotificationButton>
+    val buttons: List<NotificationButton>,
+    val isPlaying: Boolean,
+    val position: Float,
+    val duration: Float
 ) {
     companion object {
         fun getData(context: Context): NotificationOptions {
@@ -68,6 +71,10 @@ data class NotificationOptions(
                 }
             }
 
+            val isPlaying = prefs.getBoolean(PrefsKey.IS_PLAYING, false)
+            val position = prefs.getFloat(PrefsKey.POSITION, 0F)
+            val duration = prefs.getFloat(PrefsKey.DURATION, 0F)
+
             return NotificationOptions(
                 serviceId = serviceId,
                 channelId = channelId,
@@ -83,7 +90,10 @@ data class NotificationOptions(
                 isSticky = isSticky,
                 visibility = visibility,
                 iconData = iconData,
-                buttons = buttons
+                buttons = buttons,
+                isPlaying = isPlaying,
+                position = position,
+                duration = duration
             )
         }
 
@@ -131,6 +141,9 @@ data class NotificationOptions(
                 putInt(PrefsKey.VISIBILITY, visibility)
                 putString(PrefsKey.ICON_DATA, iconDataJson)
                 putString(PrefsKey.BUTTONS, buttonsJson)
+                putBoolean(PrefsKey.IS_PLAYING, false)
+                putFloat(PrefsKey.POSITION, 0F)
+                putFloat(PrefsKey.DURATION, 0F)
                 commit()
             }
         }
@@ -145,10 +158,20 @@ data class NotificationOptions(
             val contentText = map?.get(PrefsKey.NOTIFICATION_CONTENT_TEXT) as? String
                 ?: prefs.getString(PrefsKey.NOTIFICATION_CONTENT_TEXT, null)
                 ?: ""
+            val isPlaying = map?.get(PrefsKey.IS_PLAYING) as? Boolean
+                ?: prefs.getBoolean(PrefsKey.IS_PLAYING, false)
+            val position = map?.get(PrefsKey.POSITION) as? Float
+                ?: prefs.getFloat(PrefsKey.POSITION, 0F)
+            val duration = map?.get(PrefsKey.DURATION) as? Float
+                ?: prefs.getFloat(PrefsKey.DURATION, 0F)
+
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)
                 putString(PrefsKey.NOTIFICATION_CONTENT_TEXT, contentText)
+                putBoolean(PrefsKey.IS_PLAYING, isPlaying)
+                putFloat(PrefsKey.POSITION, position)
+                putFloat(PrefsKey.DURATION, duration)
                 commit()
             }
         }

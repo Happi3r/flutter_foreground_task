@@ -52,12 +52,18 @@ class MethodChannelFlutterForegroundTask extends FlutterForegroundTaskPlatform {
   Future<bool> updateService({
     String? notificationTitle,
     String? notificationText,
+    bool playing = false,
+    double position = 0,
+    double duration = 0,
     Function? callback,
   }) async {
     if (await isRunningService) {
       final options = <String, dynamic>{
         'notificationContentTitle': notificationTitle,
         'notificationContentText': notificationText,
+        'isPlaying': playing,
+        'position': position,
+        'duration': duration,
       };
       if (callback != null) {
         options['callbackHandle'] =

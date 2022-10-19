@@ -223,7 +223,15 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			builder.setStyle(Notification.MediaStyle()
 				.setShowActionsInCompactView(0, 1, 2)
 			)
-			startForeground(notificationOptions.serviceId, builder.build())
+			val status = builder.build()
+			if (notificationOptions.isPlaying) {
+				status.actions[1] = Notification.Action(getDrawableResourceId(
+					"drawable",
+					"ic",
+					"pause"
+				), "Play", pendingIntent)
+			}
+			startForeground(notificationOptions.serviceId, status)
 		} else {
 			val builder = NotificationCompat.Builder(this, notificationOptions.channelId)
 			builder.setOngoing(true)
@@ -460,7 +468,11 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				PendingIntent.getBroadcast(this, i + 1, bIntent, 0)
 			}
 			val bAction = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				Notification.Action.Builder(id, buttons[i].text, bPendingIntent).build()
+				Notification.Action.Builder(getDrawableResourceId(
+					"drawable",
+					"ic",
+					buttons[i].id
+				), buttons[i].text, bPendingIntent).build()
 			} else {
 				Notification.Action.Builder(0, buttons[i].text, bPendingIntent).build()
 			}

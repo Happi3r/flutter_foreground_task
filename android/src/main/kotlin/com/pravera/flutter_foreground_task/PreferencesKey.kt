@@ -36,4 +36,8 @@ object PreferencesKey {
     const val ALLOW_WIFI_LOCK = "allowWifiLock"
     const val CALLBACK_HANDLE = "callbackHandle"
     const val CALLBACK_HANDLE_ON_BOOT = "callbackHandleOnBoot"
+
+    const val IS_PLAYING = "playing"
+    const val POSITION = "position"
+    const val DURATION = "duration"
 }

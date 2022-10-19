@@ -98,11 +98,17 @@ class FlutterForegroundTask {
   static Future<bool> updateService({
     String? notificationTitle,
     String? notificationText,
+    bool playing = false,
+    double position = 0,
+    double duration = 0,
     Function? callback,
   }) =>
       FlutterForegroundTaskPlatform.instance.updateService(
         notificationText: notificationText,
         notificationTitle: notificationTitle,
+        playing: playing,
+        position: position,
+        duration: duration,
         callback: callback,
       );
 
