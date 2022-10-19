@@ -6,10 +6,12 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 class WithForegroundTask extends StatefulWidget {
   /// A child widget that contains the [Scaffold] widget.
   final Widget child;
+  final void Function()? onForeground;
 
   const WithForegroundTask({
     Key? key,
     required this.child,
+    this.onForeground,
   }) : super(key: key);
 
   @override
@@ -21,6 +23,9 @@ class _WithForegroundTaskState extends State<WithForegroundTask> {
     if (!Navigator.canPop(context) &&
         await FlutterForegroundTask.isRunningService) {
       FlutterForegroundTask.minimizeApp();
+      if (widget.onForeground != null) {
+        widget.onForeground!();
+      }
       return false;
     }
 
