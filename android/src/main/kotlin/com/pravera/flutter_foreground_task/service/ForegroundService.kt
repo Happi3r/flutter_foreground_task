@@ -204,13 +204,13 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			nm.createNotificationChannel(channel)
 
 			val builder = Notification.Builder(this, notificationOptions.channelId)
-			builder.setOngoing(true)
-			builder.setShowWhen(notificationOptions.showWhen)
-			builder.setSmallIcon(iconResId)
-			builder.setContentIntent(pendingIntent)
-			builder.setContentTitle(notificationOptions.contentTitle)
-			builder.setContentText(notificationOptions.contentText)
-			builder.setVisibility(notificationOptions.visibility)
+				.setOngoing(true)
+				.setShowWhen(notificationOptions.showWhen)
+				.setSmallIcon(iconResId)
+				.setContentIntent(pendingIntent)
+				.setContentTitle(notificationOptions.contentTitle)
+				.setContentText(notificationOptions.contentText)
+				.setVisibility(notificationOptions.visibility)
 			if (iconBackgroundColor != null) {
 				builder.setColor(iconBackgroundColor)
 			}
@@ -221,7 +221,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
 			}
 			builder.setStyle(Notification.MediaStyle()
-				.setShowActionsInCompactView(0, 1)
+				.setShowActionsInCompactView(0, 1, 2)
 			)
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
@@ -460,7 +460,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				PendingIntent.getBroadcast(this, i + 1, bIntent, 0)
 			}
 			val bAction = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				Notification.Action.Builder(id, "TEST"/*buttons[i].text*/, bPendingIntent).build()
+				Notification.Action.Builder(id, buttons[i].text, bPendingIntent).build()
 			} else {
 				Notification.Action.Builder(0, buttons[i].text, bPendingIntent).build()
 			}
