@@ -126,6 +126,10 @@ data class NotificationOptions(
                 buttonsJson = JSONArray(buttons).toString()
             }
 
+            val isPlaying = map?.get(PrefsKey.IS_PLAYING) as? Boolean ?: false
+            val position = map?.get(PrefsKey.POSITION) as? Float ?: 0F
+            val duration = map?.get(PrefsKey.DURATION) as? Float ?: 0F
+
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CHANNEL_ID, channelId)
                 putString(PrefsKey.NOTIFICATION_CHANNEL_NAME, channelName)
@@ -141,9 +145,9 @@ data class NotificationOptions(
                 putInt(PrefsKey.VISIBILITY, visibility)
                 putString(PrefsKey.ICON_DATA, iconDataJson)
                 putString(PrefsKey.BUTTONS, buttonsJson)
-                putBoolean(PrefsKey.IS_PLAYING, false)
-                putFloat(PrefsKey.POSITION, 0F)
-                putFloat(PrefsKey.DURATION, 0F)
+                putBoolean(PrefsKey.IS_PLAYING, isPlaying)
+                putFloat(PrefsKey.POSITION, position)
+                putFloat(PrefsKey.DURATION, duration)
                 commit()
             }
         }
@@ -164,7 +168,6 @@ data class NotificationOptions(
                 ?: prefs.getFloat(PrefsKey.POSITION, 0F)
             val duration = map?.get(PrefsKey.DURATION) as? Float
                 ?: prefs.getFloat(PrefsKey.DURATION, 0F)
-
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)

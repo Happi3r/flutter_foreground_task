@@ -223,15 +223,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			builder.setStyle(Notification.MediaStyle()
 				.setShowActionsInCompactView(0, 1, 2)
 			)
-			val status = builder.build()
-			if (notificationOptions.isPlaying) {
-				status.actions[1] = Notification.Action(getDrawableResourceId(
-					"drawable",
-					"ic",
-					"pause"
-				), "Play", pendingIntent)
-			}
-			startForeground(notificationOptions.serviceId, status)
+			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
 			val builder = NotificationCompat.Builder(this, notificationOptions.channelId)
 			builder.setOngoing(true)
@@ -459,8 +451,13 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		val actions = mutableListOf<Notification.Action>()
 		val buttons = notificationOptions.buttons
 		for (i in buttons.indices) {
+			var isPlaying = notificationOptions.isPlaying && buttons[i].id == "play"
 			val bIntent = Intent(ACTION_BUTTON_PRESSED).apply {
-				putExtra(DATA_FIELD_NAME, buttons[i].id)
+				if (isPlaying) {
+					putExtra(DATA_FIELD_NAME, "pause")
+				} else {
+					putExtra(DATA_FIELD_NAME, buttons[i].id)
+				}
 			}
 			val bPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 				PendingIntent.getBroadcast(this, i + 1, bIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -471,7 +468,8 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				Notification.Action.Builder(getDrawableResourceId(
 					"drawable",
 					"ic",
-					buttons[i].id
+					if (isPlaying) "pause"
+					else buttons[i].id
 				), buttons[i].text, bPendingIntent).build()
 			} else {
 				Notification.Action.Builder(0, buttons[i].text, bPendingIntent).build()

@@ -37,7 +37,7 @@ object PreferencesKey {
     const val CALLBACK_HANDLE = "callbackHandle"
     const val CALLBACK_HANDLE_ON_BOOT = "callbackHandleOnBoot"
 
-    const val IS_PLAYING = "playing"
+    const val IS_PLAYING = "isPlaying"
     const val POSITION = "position"
     const val DURATION = "duration"
 }
