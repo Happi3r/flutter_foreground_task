@@ -200,6 +200,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			if (!notificationOptions.playSound) {
 				channel.setSound(null, null)
 			}
+			Log.d(TAG, channel.toString())
 			val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 			nm.createNotificationChannel(channel)
 
