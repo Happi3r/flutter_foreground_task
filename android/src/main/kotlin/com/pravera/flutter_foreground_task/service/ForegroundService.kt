@@ -197,6 +197,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			)
 			channel.description = notificationOptions.channelDescription
 			channel.enableVibration(notificationOptions.enableVibration)
+			channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 			if (!notificationOptions.playSound) {
 				channel.setSound(null, null)
 			}
@@ -204,15 +205,20 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 			nm.createNotificationChannel(channel)
 
-			val builder = Notification.Builder(this, notificationOptions.channelId)
-				.setOngoing(true)
-				.setShowWhen(notificationOptions.showWhen)
-				.setSmallIcon(iconResId)
-				.setContentIntent(pendingIntent)
-				.setContentTitle(notificationOptions.contentTitle)
-				.setContentText(notificationOptions.contentText)
-				.setVisibility(notificationOptions.visibility)
 			if (iconBackgroundColor != null) {
+				val builder = Notification.Builder(this, notificationOptions.channelId)
+						.setOngoing(true)
+						.setShowWhen(notificationOptions.showWhen)
+						.setSmallIcon(iconResId)
+						.setContentIntent(pendingIntent)
+						.setContentTitle(notificationOptions.contentTitle)
+						.setContentText(notificationOptions.contentText)
+						.setVisibility(notificationOptions.visibility)
+						.setProgress(
+								notificationOptions.duration.toInt(),
+								notificationOptions.position.toInt(),
+								false
+						)
 				builder.setColor(iconBackgroundColor)
 			}
 			for (action in buildButtonActions(iconResId)) {
