@@ -173,13 +173,6 @@ data class NotificationOptions(
             val duration = if (rawDuration != -1) rawDuration.toFloat()
             else prefs.getFloat(PrefsKey.DURATION, 0F)
 
-            Log.i(TAG, String.format("%s = %f, %s = %f",
-                    rawPosition.toString(),
-                    position,
-                    rawDuration.toString(),
-                    duration
-            ))
-
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)
                 putString(PrefsKey.NOTIFICATION_CONTENT_TEXT, contentText)
