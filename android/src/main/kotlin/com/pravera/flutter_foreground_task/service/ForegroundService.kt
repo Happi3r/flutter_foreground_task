@@ -215,9 +215,9 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 					.setContentTitle(notificationOptions.contentTitle)
 					.setContentText(notificationOptions.contentText)
 					.setVisibility(notificationOptions.visibility)
-//			if (iconBackgroundColor != null) {
-//				builder.setColor(iconBackgroundColor)
-//			}
+			if (iconBackgroundColor != null) {
+				builder.setColor(iconBackgroundColor)
+			}
 			for (action in buildButtonActions(iconResId)) {
 				builder.addAction(action)
 			}
@@ -231,12 +231,16 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 					.build()
 			)
 			session.setPlaybackState(PlaybackState.Builder()
-					.setBufferedPosition(notificationOptions.position.toLong()).build()
+					.setBufferedPosition(notificationOptions.position.toLong())
+					.setState(
+							PlaybackState.STATE_PLAYING,
+							notificationOptions.position.toLong(),
+							1f
+					).build()
 			)
-			builder.setStyle(Notification.MediaStyle()
+			builder.style = Notification.MediaStyle()
 					.setMediaSession(session.sessionToken)
 					.setShowActionsInCompactView(0, 1, 2)
-			)
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
 			val builder = NotificationCompat.Builder(this, notificationOptions.channelId)
