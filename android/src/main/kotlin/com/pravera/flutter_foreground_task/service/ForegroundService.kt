@@ -241,6 +241,8 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			builder.style = Notification.MediaStyle()
 					.setMediaSession(session.sessionToken)
 					.setShowActionsInCompactView(0, 1, 2)
+			Log.i(TAG, "NATIVE POSITION: " + notificationOptions.position.toString())
+			Log.i(TAG, "NATIVE DURATION: " + notificationOptions.duration.toString())
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
 			val builder = NotificationCompat.Builder(this, notificationOptions.channelId)
