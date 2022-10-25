@@ -173,10 +173,9 @@ data class NotificationOptions(
 
             Log.i(TAG, String.format("pos %.2f (%s) | dur %.2f (%s)",
                     position,
-                    map?.get(PrefsKey.POSITION) as? String ?: "null",
+                    map?.get(PrefsKey.POSITION).toString(),
                     duration,
-                    map?.get(PrefsKey.DURATION) as? String ?: "null",
-
+                    map?.get(PrefsKey.DURATION).toString(),
             ))
 
             with(prefs.edit()) {
