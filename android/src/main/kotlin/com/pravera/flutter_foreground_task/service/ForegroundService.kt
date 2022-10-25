@@ -232,7 +232,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			var session = MediaSession(this, "wakMusic")
 			session.isActive = notificationOptions.isPlaying
 			builder.setStyle(Notification.MediaStyle().setMediaSession(session.sessionToken)
-				.setShowActionsInCompactView(0, 1, 2)
+				.setShowActionsInCompactView(0, 1)
 			)
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
