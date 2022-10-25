@@ -220,19 +220,19 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 							notificationOptions.position.toInt(),
 							false
 					)
-			if (iconBackgroundColor != null) {
-				builder.setColor(iconBackgroundColor)
-			}
+//			if (iconBackgroundColor != null) {
+//				builder.setColor(iconBackgroundColor)
+//			}
 			for (action in buildButtonActions(iconResId)) {
 				builder.addAction(action)
 			}
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 				builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
 			}
-			var session = MediaSession(this, "wakMusic")
-			session.isActive = notificationOptions.isPlaying
-			builder.setStyle(Notification.MediaStyle().setMediaSession(session.sessionToken)
-				.setShowActionsInCompactView(0, 1)
+//			var session = MediaSession(this, "wakMusic")
+//			session.isActive = notificationOptions.isPlaying
+			builder.setStyle(Notification.MediaStyle()
+				.setShowActionsInCompactView(0, 1, 2)
 			)
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
@@ -462,15 +462,15 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		val actions = mutableListOf<Notification.Action>()
 		val buttons = notificationOptions.buttons
 		for (i in buttons.indices) {
-			var isPlaying = notificationOptions.isPlaying && buttons[i].id == "play"
-			val bIntent = Intent(ACTION_BUTTON_PRESSED).apply {
-				if (isPlaying) {
-					putExtra(DATA_FIELD_NAME, "pause")
-				} else if (notificationOptions.duration == notificationOptions.position) {
-					putExtra(DATA_FIELD_NAME, "replay")
-				} else {
-					putExtra(DATA_FIELD_NAME, buttons[i].id)
+			var buttonId = if (buttons[i].id == "play") {
+				when {
+					notificationOptions.isPlaying -> "pause"
+					notificationOptions.duration == notificationOptions.position -> "replay"
+					else -> "play"
 				}
+			} else buttons[i].id
+			val bIntent = Intent(ACTION_BUTTON_PRESSED).apply {
+				putExtra(DATA_FIELD_NAME, buttonId)
 			}
 			val bPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 				PendingIntent.getBroadcast(this, i + 1, bIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -481,9 +481,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				Notification.Action.Builder(getDrawableResourceId(
 					"drawable",
 					"ic",
-					if (isPlaying) "pause"
-					else if (notificationOptions.duration == notificationOptions.position) "replay"
-					else buttons[i].id
+					buttonId
 				), buttons[i].text, bPendingIntent).build()
 			} else {
 				Notification.Action.Builder(0, buttons[i].text, bPendingIntent).build()
