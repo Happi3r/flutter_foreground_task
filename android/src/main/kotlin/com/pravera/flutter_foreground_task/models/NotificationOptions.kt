@@ -1,6 +1,8 @@
 package com.pravera.flutter_foreground_task.models
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
 import com.pravera.flutter_foreground_task.PreferencesKey as PrefsKey
@@ -168,6 +170,14 @@ data class NotificationOptions(
                 ?: prefs.getFloat(PrefsKey.POSITION, 0F)
             val duration = map?.get(PrefsKey.DURATION) as? Float
                 ?: prefs.getFloat(PrefsKey.DURATION, 0F)
+
+            Log.i(TAG, String.format("pos %.2f (%s) | dur %.2f (%s)",
+                    position,
+                    map?.get(PrefsKey.POSITION) as? String ?: "null",
+                    duration,
+                    map?.get(PrefsKey.DURATION) as? String ?: "null",
+
+            ))
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)
