@@ -53,8 +53,8 @@ class MethodChannelFlutterForegroundTask extends FlutterForegroundTaskPlatform {
     String? notificationTitle,
     String? notificationText,
     bool playing = false,
-    double position = 0,
-    double duration = 0,
+    double? position,
+    double? duration,
     Function? callback,
   }) async {
     if (await isRunningService) {

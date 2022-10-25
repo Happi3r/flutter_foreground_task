@@ -99,8 +99,8 @@ class FlutterForegroundTask {
     String? notificationTitle,
     String? notificationText,
     bool playing = false,
-    double position = 0,
-    double duration = 0,
+    double? position,
+    double? duration,
     Function? callback,
   }) =>
       FlutterForegroundTaskPlatform.instance.updateService(
