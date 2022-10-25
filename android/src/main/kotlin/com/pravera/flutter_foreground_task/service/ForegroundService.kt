@@ -230,7 +230,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
 			}
 			var session = MediaSession(this, "wakMusic")
-			if (notificationOptions.isPlaying) session.isActive = true
+			session.isActive = notificationOptions.isPlaying
 			builder.setStyle(Notification.MediaStyle().setMediaSession(session.sessionToken)
 				.setShowActionsInCompactView(0, 1, 2)
 			)
