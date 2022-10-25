@@ -472,7 +472,8 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			var buttonId = if (buttons[i].id == "play") {
 				when {
 					notificationOptions.isPlaying -> "pause"
-					notificationOptions.duration == notificationOptions.position -> "replay"
+					notificationOptions.position != 0f
+							&& notificationOptions.duration == notificationOptions.position -> "replay"
 					else -> "play"
 				}
 			} else buttons[i].id
