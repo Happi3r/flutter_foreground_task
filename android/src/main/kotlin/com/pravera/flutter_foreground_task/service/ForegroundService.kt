@@ -215,11 +215,6 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 					.setContentTitle(notificationOptions.contentTitle)
 					.setContentText(notificationOptions.contentText)
 					.setVisibility(notificationOptions.visibility)
-					.setProgress(
-							notificationOptions.duration.toInt(),
-							notificationOptions.position.toInt(),
-							false
-					)
 //			if (iconBackgroundColor != null) {
 //				builder.setColor(iconBackgroundColor)
 //			}
@@ -229,10 +224,18 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 				builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
 			}
-//			var session = MediaSession(this, "wakMusic")
-//			session.isActive = notificationOptions.isPlaying
+			var session = MediaSession(this, "wakMusic")
+			session.isActive = notificationOptions.isPlaying
+			session.setMetadata(MediaMetadata.Builder()
+					.putLong(MediaMetadata.METADATA_KEY_DURATION, notificationOptions.duration.toLong())
+					.build()
+			)
+			session.setPlaybackState(PlaybackState.Builder()
+					.setBufferedPosition(notificationOptions.position.toLong()).build()
+			)
 			builder.setStyle(Notification.MediaStyle()
-				.setShowActionsInCompactView(0, 1, 2)
+					.setMediaSession(session.sessionToken)
+					.setShowActionsInCompactView(0, 1, 2)
 			)
 			startForeground(notificationOptions.serviceId, builder.build())
 		} else {
