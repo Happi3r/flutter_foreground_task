@@ -238,10 +238,10 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 							1f
 					).build()
 			)
-			session.release()
 			builder.style = Notification.MediaStyle()
 					.setMediaSession(session.sessionToken)
 					.setShowActionsInCompactView(0, 1, 2)
+			session.release()
 			Log.i(TAG, "NATIVE POSITION: " + notificationOptions.position.toString())
 			Log.i(TAG, "NATIVE DURATION: " + notificationOptions.duration.toString())
 			startForeground(notificationOptions.serviceId, builder.build())
