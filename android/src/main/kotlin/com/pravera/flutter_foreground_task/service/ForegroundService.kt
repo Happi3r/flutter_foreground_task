@@ -231,7 +231,6 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			}
 			var session = MediaSession(this, "wakMusic")
 			if (notificationOptions.isPlaying) session.isActive = true
-//			session.setMetadata(MediaMetadata())
 			builder.setStyle(Notification.MediaStyle().setMediaSession(session.sessionToken)
 				.setShowActionsInCompactView(0, 1, 2)
 			)
@@ -467,6 +466,8 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val bIntent = Intent(ACTION_BUTTON_PRESSED).apply {
 				if (isPlaying) {
 					putExtra(DATA_FIELD_NAME, "pause")
+				} else if (notificationOptions.duration == notificationOptions.position) {
+					putExtra(DATA_FIELD_NAME, "replay")
 				} else {
 					putExtra(DATA_FIELD_NAME, buttons[i].id)
 				}
@@ -481,6 +482,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 					"drawable",
 					"ic",
 					if (isPlaying) "pause"
+					else if (notificationOptions.duration == notificationOptions.position) "replay"
 					else buttons[i].id
 				), buttons[i].text, bPendingIntent).build()
 			} else {
