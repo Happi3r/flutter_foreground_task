@@ -238,6 +238,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 							1f
 					).build()
 			)
+			session.release()
 			builder.style = Notification.MediaStyle()
 					.setMediaSession(session.sessionToken)
 					.setShowActionsInCompactView(0, 1, 2)
