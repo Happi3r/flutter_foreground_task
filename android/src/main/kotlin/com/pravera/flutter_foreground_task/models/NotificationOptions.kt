@@ -166,19 +166,12 @@ data class NotificationOptions(
                 ?: ""
             val isPlaying = map?.get(PrefsKey.IS_PLAYING) as? Boolean
                 ?: prefs.getBoolean(PrefsKey.IS_PLAYING, false)
-            val position = map?.get(PrefsKey.POSITION) as? Float
-                ?: prefs.getFloat(PrefsKey.POSITION, 0F)
-            val duration = map?.get(PrefsKey.DURATION) as? Float
-                ?: prefs.getFloat(PrefsKey.DURATION, 0F)
-
-            Log.i(TAG, String.format("pos %.2f (%s (%s)) | dur %.2f (%s)",
-                    position,
-                    map?.get(PrefsKey.POSITION).toString(),
-                    (map?.get(PrefsKey.POSITION) ?: "")::class.simpleName,
-                    duration,
-                    map?.get(PrefsKey.DURATION).toString(),
-                    (map?.get(PrefsKey.DURATION) ?: "")::class.simpleName,
-            ))
+            val rawPosition = map?.get(PrefsKey.POSITION) as? Double ?: -1
+            val rawDuration = map?.get(PrefsKey.DURATION) as? Double ?: -1
+            val position = if (rawPosition != -1) rawPosition.toFloat()
+            else prefs.getFloat(PrefsKey.POSITION, 0F)
+            val duration = if (rawDuration != -1) rawDuration.toFloat()
+            else prefs.getFloat(PrefsKey.DURATION, 0F)
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)
