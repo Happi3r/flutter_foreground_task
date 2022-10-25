@@ -5,6 +5,9 @@ import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.media.MediaMetadata
+import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.net.wifi.WifiManager
 import android.os.*
 import android.util.Log
@@ -204,20 +207,20 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 			nm.createNotificationChannel(channel)
 
+			val builder = Notification.Builder(this, notificationOptions.channelId)
+					.setOngoing(true)
+					.setShowWhen(notificationOptions.showWhen)
+					.setSmallIcon(iconResId)
+					.setContentIntent(pendingIntent)
+					.setContentTitle(notificationOptions.contentTitle)
+					.setContentText(notificationOptions.contentText)
+					.setVisibility(notificationOptions.visibility)
+					.setProgress(
+							notificationOptions.duration.toInt(),
+							notificationOptions.position.toInt(),
+							false
+					)
 			if (iconBackgroundColor != null) {
-				val builder = Notification.Builder(this, notificationOptions.channelId)
-						.setOngoing(true)
-						.setShowWhen(notificationOptions.showWhen)
-						.setSmallIcon(iconResId)
-						.setContentIntent(pendingIntent)
-						.setContentTitle(notificationOptions.contentTitle)
-						.setContentText(notificationOptions.contentText)
-						.setVisibility(notificationOptions.visibility)
-						.setProgress(
-								notificationOptions.duration.toInt(),
-								notificationOptions.position.toInt(),
-								false
-						)
 				builder.setColor(iconBackgroundColor)
 			}
 			for (action in buildButtonActions(iconResId)) {
@@ -226,7 +229,10 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 				builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
 			}
-			builder.setStyle(Notification.MediaStyle()
+			var session = MediaSession(this, "wakMusic")
+			if (notificationOptions.isPlaying) session.isActive = true
+//			session.setMetadata(MediaMetadata())
+			builder.setStyle(Notification.MediaStyle().setMediaSession(session.sessionToken)
 				.setShowActionsInCompactView(0, 1, 2)
 			)
 			startForeground(notificationOptions.serviceId, builder.build())
