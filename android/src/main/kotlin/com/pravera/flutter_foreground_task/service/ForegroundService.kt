@@ -195,13 +195,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		val iconName = notificationOptions.iconData?.name
 		var iconBackgroundColor: Int? = null
 		val iconBackgroundColorRgb = notificationOptions.iconData?.backgroundColorRgb?.split(",")
-		if (iconBackgroundColorRgb != null && iconBackgroundColorRgb.size == 3) {
-			iconBackgroundColor = Color.rgb(
-				iconBackgroundColorRgb[0].toInt(),
-				iconBackgroundColorRgb[1].toInt(),
-				iconBackgroundColorRgb[2].toInt()
-			)
-		}
+		iconBackgroundColor = Color.rgb(7, 223, 183)
 		val iconResId = 
 		// if (iconResType.isNullOrEmpty()
 			// || iconResPrefix.isNullOrEmpty()
@@ -242,9 +236,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				}
 				if (bitmap != null) builder.setLargeIcon(bitmap)
 			}
-//			if (iconBackgroundColor != null) {
-//				builder.setColor(iconBackgroundColor)
-//			}
+			builder.setColor(iconBackgroundColor)
 			for (action in buildButtonActions(iconResId)) {
 				builder.addAction(action)
 			}
