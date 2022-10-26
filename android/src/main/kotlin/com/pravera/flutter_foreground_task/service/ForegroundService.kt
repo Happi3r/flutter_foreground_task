@@ -178,10 +178,9 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			connection.doInput = true
 			connection.connect()
 			val input = connection.inputStream
-			val bitmap = BitmapFactory.decodeStream(input)
 
-			return bitmap
-		} catch(e: IOException) {
+			return BitmapFactory.decodeStream(input)
+		} catch (e: IOException) {
 			Log.e(TAG, e.message ?: "Failed to convert bitmap from url", )
 		}
 		return null
@@ -231,7 +230,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val builder = Notification.Builder(this, notificationOptions.channelId)
 					.setOngoing(true)
 					.setShowWhen(notificationOptions.showWhen)
-//					.setSmallIcon(iconResId)
+					.setSmallIcon(iconResId)
 					.setContentIntent(pendingIntent)
 					.setContentTitle(notificationOptions.contentTitle)
 					.setContentText(notificationOptions.contentText)
@@ -240,7 +239,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				val bitmap = withContext(Dispatchers.IO) {
 					bitmapFromUrl(notificationOptions.imageUrl)
 				}
-				builder.setLargeIcon(bitmap)
+				if (bitmap != null) builder.setLargeIcon(bitmap)
 			}
 //			if (iconBackgroundColor != null) {
 //				builder.setColor(iconBackgroundColor)
