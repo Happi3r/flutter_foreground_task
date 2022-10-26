@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaMetadata
@@ -26,8 +27,10 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterCallbackInformation
 import kotlinx.coroutines.*
+import java.io.IOException
 import java.net.URL
 import java.util.*
+import javax.net.ssl.HttpsURLConnection
 import kotlin.system.exitProcess
 
 /**
@@ -168,6 +171,22 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		unregisterReceiver(broadcastReceiver)
 	}
 
+	private fun bitmapFromUrl(url: String): Bitmap? {
+		try {
+			val url = URL(url)
+			val connection = url.openConnection() as HttpsURLConnection
+			connection.doInput = true
+			connection.connect()
+			val input = connection.inputStream
+			val bitmap = BitmapFactory.decodeStream(input)
+
+			return bitmap
+		} catch(e: IOException) {
+			Log.e(TAG, e.message ?: "Failed to convert bitmap from url", )
+		}
+		return null
+	}
+
 	@SuppressLint("WrongConstant")
 	private fun startForegroundService() {
 		// Get the icon and PendingIntent to put in the notification.
@@ -209,8 +228,6 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 			nm.createNotificationChannel(channel)
 
-			val url = URL(notificationOptions.imageUrl)
-			val bitmap = BitmapFactory.decodeStream(url.openStream())
 			val builder = Notification.Builder(this, notificationOptions.channelId)
 					.setOngoing(true)
 					.setShowWhen(notificationOptions.showWhen)
@@ -219,7 +236,12 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 					.setContentTitle(notificationOptions.contentTitle)
 					.setContentText(notificationOptions.contentText)
 					.setVisibility(notificationOptions.visibility)
-					.setLargeIcon(bitmap)
+			CoroutineScope(Dispatchers.Main).launch {
+				val bitmap = withContext(Dispatchers.IO) {
+					bitmapFromUrl(notificationOptions.imageUrl)
+				}
+				builder.setLargeIcon(bitmap)
+			}
 //			if (iconBackgroundColor != null) {
 //				builder.setColor(iconBackgroundColor)
 //			}
