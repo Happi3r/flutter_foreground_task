@@ -78,7 +78,7 @@ data class NotificationOptions(
             val position = prefs.getFloat(PrefsKey.POSITION, 0F)
             val duration = prefs.getFloat(PrefsKey.DURATION, 0F)
 
-            val imageUrl = prefs.getString(PrefsKey.IMAGE_URL, null) ?: "https://i.ytimg.com/empty.jpg"
+            val imageUrl = prefs.getString(PrefsKey.IMAGE_URL, null) ?: ""
 
             return NotificationOptions(
                 serviceId = serviceId,
@@ -136,7 +136,7 @@ data class NotificationOptions(
             val position = map?.get(PrefsKey.POSITION) as? Float ?: 0F
             val duration = map?.get(PrefsKey.DURATION) as? Float ?: 0F
 
-            val imageUrl = map?.get(PrefsKey.IMAGE_URL) as? String ?: "https://i.ytimg.com/empty.jpg"
+            val imageUrl = map?.get(PrefsKey.IMAGE_URL) as? String ?: ""
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CHANNEL_ID, channelId)
@@ -181,7 +181,7 @@ data class NotificationOptions(
             else prefs.getFloat(PrefsKey.DURATION, 0F)
             val imageUrl = map?.get(PrefsKey.IMAGE_URL) as? String
                 ?: prefs.getString(PrefsKey.IMAGE_URL, null)
-                ?: "https://i.ytimg.com/empty.jpg"
+                ?: ""
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)
