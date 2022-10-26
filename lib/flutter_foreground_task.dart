@@ -101,6 +101,7 @@ class FlutterForegroundTask {
     bool? playing,
     double? position,
     double? duration,
+    String? imageUrl,
     Function? callback,
   }) =>
       FlutterForegroundTaskPlatform.instance.updateService(
@@ -109,6 +110,7 @@ class FlutterForegroundTask {
         playing: playing,
         position: position,
         duration: duration,
+        imageUrl: imageUrl,
         callback: callback,
       );
 

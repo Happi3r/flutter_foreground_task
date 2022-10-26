@@ -48,6 +48,7 @@ abstract class FlutterForegroundTaskPlatform extends PlatformInterface {
     bool? playing,
     double? position,
     double? duration,
+    String? imageUrl,
     Function? callback,
   }) {
     throw UnimplementedError('updateService() has not been implemented.');

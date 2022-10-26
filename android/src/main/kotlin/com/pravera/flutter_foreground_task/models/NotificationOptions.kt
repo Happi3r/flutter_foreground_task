@@ -25,7 +25,8 @@ data class NotificationOptions(
     val buttons: List<NotificationButton>,
     val isPlaying: Boolean,
     val position: Float,
-    val duration: Float
+    val duration: Float,
+    val imageUrl: String
 ) {
     companion object {
         fun getData(context: Context): NotificationOptions {
@@ -77,6 +78,8 @@ data class NotificationOptions(
             val position = prefs.getFloat(PrefsKey.POSITION, 0F)
             val duration = prefs.getFloat(PrefsKey.DURATION, 0F)
 
+            val imageUrl = prefs.getString(PrefsKey.IMAGE_URL, null) ?: "https://i.ytimg.com"
+
             return NotificationOptions(
                 serviceId = serviceId,
                 channelId = channelId,
@@ -95,7 +98,8 @@ data class NotificationOptions(
                 buttons = buttons,
                 isPlaying = isPlaying,
                 position = position,
-                duration = duration
+                duration = duration,
+                imageUrl = imageUrl
             )
         }
 
@@ -132,6 +136,8 @@ data class NotificationOptions(
             val position = map?.get(PrefsKey.POSITION) as? Float ?: 0F
             val duration = map?.get(PrefsKey.DURATION) as? Float ?: 0F
 
+            val imageUrl = map?.get(PrefsKey.IMAGE_URL) as? String ?: "https://i.ytimg.com"
+
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CHANNEL_ID, channelId)
                 putString(PrefsKey.NOTIFICATION_CHANNEL_NAME, channelName)
@@ -150,6 +156,7 @@ data class NotificationOptions(
                 putBoolean(PrefsKey.IS_PLAYING, isPlaying)
                 putFloat(PrefsKey.POSITION, position)
                 putFloat(PrefsKey.DURATION, duration)
+                putString(PrefsKey.IMAGE_URL, imageUrl)
                 commit()
             }
         }
@@ -172,6 +179,9 @@ data class NotificationOptions(
             else prefs.getFloat(PrefsKey.POSITION, 0F)
             val duration = if (rawDuration != -1) rawDuration.toFloat()
             else prefs.getFloat(PrefsKey.DURATION, 0F)
+            val imageUrl = map?.get(PrefsKey.IMAGE_URL) as? String
+                ?: prefs.getString(PrefsKey.IMAGE_URL, null)
+                ?: "https://i.ytimg.com"
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CONTENT_TITLE, contentTitle)
@@ -179,6 +189,7 @@ data class NotificationOptions(
                 putBoolean(PrefsKey.IS_PLAYING, isPlaying)
                 putFloat(PrefsKey.POSITION, position)
                 putFloat(PrefsKey.DURATION, duration)
+                putString(PrefsKey.IMAGE_URL, imageUrl)
                 commit()
             }
         }

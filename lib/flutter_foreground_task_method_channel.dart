@@ -55,6 +55,7 @@ class MethodChannelFlutterForegroundTask extends FlutterForegroundTaskPlatform {
     bool? playing,
     double? position,
     double? duration,
+    String? imageUrl,
     Function? callback,
   }) async {
     if (await isRunningService) {
@@ -64,6 +65,7 @@ class MethodChannelFlutterForegroundTask extends FlutterForegroundTaskPlatform {
         'isPlaying': playing,
         'position': position,
         'duration': duration,
+        'imageUrl': imageUrl,
       };
       if (callback != null) {
         options['callbackHandle'] =

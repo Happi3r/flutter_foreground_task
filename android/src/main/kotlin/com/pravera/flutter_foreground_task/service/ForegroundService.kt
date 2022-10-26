@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.MediaMetadata
 import android.media.session.MediaSession
@@ -25,6 +26,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterCallbackInformation
 import kotlinx.coroutines.*
+import java.net.URL
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -207,17 +209,20 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 			nm.createNotificationChannel(channel)
 
+			val url = URL(notificationOptions.imageUrl)
+			val bitmap = BitmapFactory.decodeStream(url.openStream())
 			val builder = Notification.Builder(this, notificationOptions.channelId)
 					.setOngoing(true)
 					.setShowWhen(notificationOptions.showWhen)
-					.setSmallIcon(iconResId)
+//					.setSmallIcon(iconResId)
 					.setContentIntent(pendingIntent)
 					.setContentTitle(notificationOptions.contentTitle)
 					.setContentText(notificationOptions.contentText)
 					.setVisibility(notificationOptions.visibility)
-			if (iconBackgroundColor != null) {
-				builder.setColor(iconBackgroundColor)
-			}
+					.setLargeIcon(bitmap)
+//			if (iconBackgroundColor != null) {
+//				builder.setColor(iconBackgroundColor)
+//			}
 			for (action in buildButtonActions(iconResId)) {
 				builder.addAction(action)
 			}

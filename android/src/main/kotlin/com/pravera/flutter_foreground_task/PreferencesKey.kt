@@ -40,4 +40,5 @@ object PreferencesKey {
     const val IS_PLAYING = "isPlaying"
     const val POSITION = "position"
     const val DURATION = "duration"
+    const val IMAGE_URL = "imageUrl"
 }
