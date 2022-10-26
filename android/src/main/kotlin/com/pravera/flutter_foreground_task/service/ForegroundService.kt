@@ -202,13 +202,14 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 				iconBackgroundColorRgb[2].toInt()
 			)
 		}
-		val iconResId = if (iconResType.isNullOrEmpty()
-			|| iconResPrefix.isNullOrEmpty()
-			|| iconName.isNullOrEmpty()) {
-			getAppIconResourceId(pm)
-		} else {
-			getDrawableResourceId(iconResType, iconResPrefix, iconName)
-		}
+		val iconResId = 
+		// if (iconResType.isNullOrEmpty()
+			// || iconResPrefix.isNullOrEmpty()
+			// || iconName.isNullOrEmpty()) {
+			// getAppIconResourceId(pm)
+		// } else {
+			getDrawableResourceId("drawable", "ic", "launcher")
+		// }
 		val pendingIntent = getPendingIntent(pm)
 
 		// Create a notification and start the foreground service.
