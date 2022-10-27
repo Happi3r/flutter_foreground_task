@@ -137,6 +137,7 @@ data class NotificationOptions(
             val duration = map?.get(PrefsKey.DURATION) as? Float ?: 0F
 
             val imageUrl = map?.get(PrefsKey.IMAGE_URL) as? String ?: ""
+            Log.i(TAG, "putData: $imageUrl")
 
             with(prefs.edit()) {
                 putString(PrefsKey.NOTIFICATION_CHANNEL_ID, channelId)
