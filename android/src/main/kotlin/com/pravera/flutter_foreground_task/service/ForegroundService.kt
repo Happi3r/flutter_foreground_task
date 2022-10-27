@@ -176,7 +176,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		try {
 
 			val url = URL(
-				if (u.isNullOrEmpty()) "https://i.ytimg.com/empty.jpg"
+				if (u.isNullOrEmpty()) "https://i.ytimg.com/vi/_OsnBqrh6yg/default.jpg"
 				else u
 			)
 			val connection = url.openStream()
