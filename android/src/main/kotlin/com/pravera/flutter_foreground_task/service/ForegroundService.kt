@@ -195,14 +195,14 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		val iconName = notificationOptions.iconData?.name
 		var iconBackgroundColor: Int? = null
 		val iconBackgroundColorRgb = notificationOptions.iconData?.backgroundColorRgb?.split(",")
-		iconBackgroundColor = Color.rgb(7, 223, 183)
+		iconBackgroundColor = Color.rgb(255, 255, 255)
 		val iconResId = 
 		// if (iconResType.isNullOrEmpty()
 			// || iconResPrefix.isNullOrEmpty()
 			// || iconName.isNullOrEmpty()) {
 			// getAppIconResourceId(pm)
 		// } else {
-			getDrawableResourceId("drawable", "ic", "launcher")
+		getDrawableResourceId("drawable", "ic", "launcher")
 		// }
 		val pendingIntent = getPendingIntent(pm)
 
@@ -215,11 +215,11 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			)
 			channel.description = notificationOptions.channelDescription
 			channel.enableVibration(notificationOptions.enableVibration)
-			channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 			if (!notificationOptions.playSound) {
 				channel.setSound(null, null)
 			}
 			val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+			channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 			nm.createNotificationChannel(channel)
 
 			val builder = Notification.Builder(this, notificationOptions.channelId)
