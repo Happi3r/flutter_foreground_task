@@ -179,7 +179,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 
 			return BitmapFactory.decodeStream(connection)
 		} catch (e: Exception) {
-			Log.e(TAG, e.toString() + url.toString())
+			Log.e(TAG, e.toString() + if (url.isNullOrEmpty()) "null" else url)
 		}
 		return null
 	}
