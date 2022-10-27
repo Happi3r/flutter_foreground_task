@@ -176,7 +176,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		try {
 
 			val url = URL(
-				if (u.isNullOrEmpty()) "https://i.ytimg.com/vi/_OsnBqrh6yg/default.jpg"
+				if (u.isNullOrEmpty()) "https://i.ytimg.com/vi//default.jpg"
 				else u
 			)
 			val connection = url.openStream()
@@ -232,12 +232,12 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 					.setContentTitle(notificationOptions.contentTitle)
 					.setContentText(notificationOptions.contentText)
 					.setVisibility(notificationOptions.visibility)
-			CoroutineScope(Dispatchers.Main).launch {
-				val bitmap = withContext(Dispatchers.IO) {
-					bitmapFromUrl(notificationOptions.imageUrl)
-				}
-				if (bitmap != null) builder.setLargeIcon(bitmap)
-			}
+//			CoroutineScope(Dispatchers.Main).launch {
+//				val bitmap = withContext(Dispatchers.IO) {
+//					bitmapFromUrl(notificationOptions.imageUrl)
+//				}
+//				if (bitmap != null) builder.setLargeIcon(bitmap)
+//			}
 			builder.setColor(iconBackgroundColor)
 			for (action in buildButtonActions(iconResId)) {
 				builder.addAction(action)
