@@ -178,7 +178,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 			val connection = url.openStream()
 
 			return BitmapFactory.decodeStream(connection)
-		} catch (e: IOException) {
+		} catch (e: Exception) {
 			Log.e(TAG, e.toString())
 		}
 		return null
