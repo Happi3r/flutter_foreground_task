@@ -28,6 +28,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.FlutterCallbackInformation
 import kotlinx.coroutines.*
 import java.io.IOException
+import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
@@ -174,12 +175,9 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 	private fun bitmapFromUrl(url: String): Bitmap? {
 		try {
 			val url = URL(url)
-			val connection = url.openConnection() as HttpsURLConnection
-			connection.doInput = true
-			connection.connect()
-			val input = connection.inputStream
+			val connection = url.openStream()
 
-			return BitmapFactory.decodeStream(input)
+			return BitmapFactory.decodeStream(connection)
 		} catch (e: IOException) {
 			Log.e(TAG, e.message ?: "Failed to convert bitmap from url", )
 		}
