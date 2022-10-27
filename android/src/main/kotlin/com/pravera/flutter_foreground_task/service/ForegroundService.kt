@@ -179,7 +179,7 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 
 			return BitmapFactory.decodeStream(connection)
 		} catch (e: IOException) {
-			Log.e(TAG, e.message ?: "Failed to convert bitmap from url", )
+			Log.e(TAG, e.toString())
 		}
 		return null
 	}
