@@ -172,14 +172,18 @@ class ForegroundService : Service(), MethodChannel.MethodCallHandler {
 		unregisterReceiver(broadcastReceiver)
 	}
 
-	private fun bitmapFromUrl(url: String): Bitmap? {
+	private fun bitmapFromUrl(u: String): Bitmap? {
 		try {
-			val url = URL(url)
+
+			val url = URL(
+				if (u.isNullOrEmpty()) "https://i.ytimg.com/empty.jpg"
+				else u
+			)
 			val connection = url.openStream()
 
 			return BitmapFactory.decodeStream(connection)
 		} catch (e: Exception) {
-			Log.e(TAG, e.toString() + if (url.isNullOrEmpty()) "null" else url)
+			Log.e(TAG, e.toString())
 		}
 		return null
 	}
